@@ -16,7 +16,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class Stock implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,11 +29,15 @@ public class Stock implements Serializable {
 	@OneToMany(mappedBy = "stock")
 	@JsonIgnore
 	private Set<Produit> produits;
-	public Stock(String libelleStock, Integer qte, Integer qteMin) {
+	
+	
+	public Stock(long i, String libelleStock, Integer qte, Integer qteMin) {
 		super();
+		this.idStock = i;
 		this.libelleStock = libelleStock;
 		this.qte = qte;
 		this.qteMin = qteMin;
 	}
 
+	
 }
