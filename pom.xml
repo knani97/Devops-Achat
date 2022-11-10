@@ -16,6 +16,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+    	<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,8 +55,23 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
+    
+<distributionManagement>
+<repository>
+
+<id>deploymentRepo</id>
+<name>Nexus Repository</name>
+<url>http://192.168.1.4:8081/repository/maven-releases/</url>
+</repository>
+</distributionManagement>
 
 	<build>
 		<plugins>
@@ -70,6 +87,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+  <groupId>org.jacoco</groupId>
+  <artifactId>jacoco-maven-plugin</artifactId>
+  <version>0.8.9-SNAPSHOT</version>
+</plugin>
+			<plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-resources-plugin</artifactId>
+                                <version>3.1.0</version>
+                        </plugin>
 		</plugins>
 	</build>
 
