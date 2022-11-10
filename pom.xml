@@ -101,7 +101,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
+				<version>0.8.6</version>
 				<executions>
 					<execution>
 						<goals>
@@ -123,6 +123,9 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.1.0</version>
 			</plugin>
+			
+
+
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version> <!-- matters until now-->
@@ -139,6 +142,7 @@
 						<artifactId>junit-vintage-engine</artifactId>
 						<version>4.12.1</version>
 					</dependency>
+					
 					<!-- JUnit 5 engine to run JUnit 5 tests -->
 					<dependency>
 						<groupId>org.junit.jupiter</groupId>
