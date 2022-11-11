@@ -1,36 +1,38 @@
-version: "2"
+version: "3.3"
 
+#Define services
 services:
- mysqldb:
-   image: mysql:5.7
-   restart: unless-stopped
-   ports:
-      - "3306:3306"
-   volumes:
-      - db:/var/lib/mysql
- app:
-   container_name: spring
-   image: validcards20/devops
-   depends_on:
-     - mysqldb
-   build: .
-   restart: on-failure
-   ports:
-     - "8089:8089"
-   environment:
-     MYSQL_ALLOW_EMPTY_PASSWORD: 1  
-     SPRING_APPLICATION_JSON: '{
-       "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/achatdb?useSSL=false",
-       "spring.datasource.username" : "root",
-       "spring.datasource.password" : "",
-       "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-       "spring.jpa.hibernate.ddl-auto" : "update"}'
-   
-   stdin_open: true
-   tty: true
-    
-    
- 
 
-volumes:
- db:
+  mysql-db:
+    image: mysql:5.6
+    container_name: mysql-db
+    #Environment variable for password and default database
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_DATABASE: 'achatdb'
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp #Forwars the exposed port 3306 on the container to port 3306 on the host machine
+    volumes:
+      - /home/mysql/data:/home/vagrant/mysql:rw
+  #Back-end Spring Boot Application
+  springboot-app:
+    #The docker file in BE, build the jar and provides the docker image.
+    image: knani97/springbootachat1:latest
+    container_name: springboot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/achatdb?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      MYSQL_HOST: mysql-db
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: achatdb
+    restart: on-failure
+    #Environment variable for Spring Boot Application.
+    ports:
+      - 8089:8089 #Forwars the exposed port 8080 on the container to port 8080 on the host machine
+    links:
+      - mysql-db
